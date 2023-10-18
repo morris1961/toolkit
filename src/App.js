@@ -1,23 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import { Radio } from 'antd';
+import Footnote from './components/footnote';
+import Reference from './components/reference';
+
 
 function App() {
+  const [type, setType] = useState("footnote");
+  const onChange = (e) => {
+    setType(e.target.value);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <Radio.Group onChange={onChange} defaultValue="footnote">
+        <Radio.Button value="footnote">註腳</Radio.Button>
+        <Radio.Button value="reference">參考書目</Radio.Button>
+      </Radio.Group>
+      {type === "footnote" ? <Footnote></Footnote> : <Reference></Reference>}
     </div>
   );
 }
