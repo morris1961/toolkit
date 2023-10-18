@@ -34,19 +34,15 @@ function getBook(values) {
   let p = "";
   if (values.isFirst) {
     if (trans === "" && editors === "") {
-      p += authors
+      p += authors;
+    } else {
+      p += `${authors}撰`;
+      if (trans !== "") p += `，${trans}譯`;
+      if (editors !== "") p += `（${editors}）`;
     }
-    else {
-      p += authors + "撰"
-      if (trans !== "")
-        p += "，" + trans + "譯"
-      if (editors !== "")
-        p += "（" + editors + "）"
-    }
-    p += "，《" + title + "》（" + publisher + "：" + place + "，" + publishDate + "），頁" + page1 + "－" + page2 + "。"
-  }
-  else {
-    p += authors + "，《" + title + "》，頁" + page1 + "－" + page2 + "。"
+    p += `，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
+  } else {
+    p += `${authors}，《${title}》，頁${page1}－${page2}。`;
   }
   return p;
 }
@@ -56,18 +52,11 @@ function getTranslation(values) {
   const { authors, trans } = getContributors(contributors);
   let p = "";
   if (values.isFirst) {
-    if (authors.includes("、"))
-      p += authors.slice(0, authors.indexOf("、")) + "等著，"
-    else
-      p += authors + "著，"
-    if (trans.includes("、"))
-      p += trans.slice(0, trans.indexOf("、")) + "等譯"
-    else
-      p += trans + "譯，"
-    p += "《" + title + "》（" + publisher + "：" + place + "，" + publishDate + "），頁" + page1 + "－" + page2 + "。"
-  }
-  else {
-    p += authors + "，" + trans + "，《" + title + "》，頁" + page1 + "－" + page2 + "。"
+    p += `${authors.includes("、") ? authors.slice(0, authors.indexOf("、")) + "等著，" : authors + "著，"}`;
+    p += `${trans.includes("、") ? trans.slice(0, trans.indexOf("、")) + "等譯" : trans + "譯"}`;
+    p += `《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
+  } else {
+    p += `${authors}，${trans}，《${title}》，頁${page1}－${page2}。`;
   }
   return p;
 }
@@ -78,67 +67,58 @@ function getChapter(values) {
   let p = "";
   if (values.isFirst) {
     if (author2 !== "") {
-      p += author2
-      p += "，〈" + paraName + "〉，"
+      p += `${author2}，〈${paraName}〉，`;
       if (authors.includes("、")) {
-        p += authors.slice(0, authors.indexOf("、")) + "等著"
-      }
-      else {
-        p += authors
+        p += `${authors.slice(0, authors.indexOf("、"))}等著`;
+      } else {
+        p += authors;
         if (trans !== "") {
-          p += "著"
+          p += "著";
         }
       }
-      p += "，"
+      p += "，";
       if (trans !== "") {
         if (trans.includes("、")) {
-          p += trans.slice(0, trans.indexOf("、")) + "等"
+          p += `${trans.slice(0, trans.indexOf("、"))}等`;
+        } else {
+          p += trans;
         }
-        else {
-          p += trans
-        }
-        p += "譯，"
+        p += "譯，";
       }
-      p += "《" + title + "》（" + publisher + "：" + place + "，" + publishDate + "），" + paraNum + "，頁" + page1 + "－" + page2 + "。"
-    }
-    else {
+      p += `《${title}》（${publisher}：${place}，${publishDate}），${paraNum}，頁${page1}－${page2}。`;
+    } else {
       if (authors.includes("、")) {
-        p += authors.slice(0, authors.indexOf("、")) + "等著"
-      }
-      else {
-        p += authors
+        p += `${authors.slice(0, authors.indexOf("、"))}等著`;
+      } else {
+        p += authors;
         if (trans !== "") {
-          p += "著"
+          p += "著";
         }
       }
-      p += "，"
+      p += "，";
       if (trans.includes("、")) {
-        p += trans.slice(0, trans.indexOf("、")) + "等"
+        p += `${trans.slice(0, trans.indexOf("、"))}等`;
+      } else {
+        p += trans;
       }
-      else {
-        p += trans
-      }
-      p += "譯，"
-      p += "《" + title + "》（" + publisher + "：" + place + "，" + publishDate + "），" + paraNum + "〈" + paraName + "〉頁" + page1 + "－" + page2 + "。"
+      p += "譯，";
+      p += `《${title}》（${publisher}：${place}，${publishDate}），${paraNum}〈${paraName}〉頁${page1}－${page2}。`;
     }
-  }
-  else {
+  } else {
     if (author2 !== "") {
-      p += author2
-      p += "，〈" + paraName + "〉，"
-      p += "頁" + page1 + "－" + page2 + "。"
-    }
-    else {
+      p += `${author2}，〈${paraName}〉，`;
+      p += `頁${page1}－${page2}。`;
+    } else {
       if (authors.includes("、")) {
-        p += authors.slice(0, authors.indexOf("、")) + "等"
+        p += `${authors.slice(0, authors.indexOf("、"))}等`;
+      } else {
+        p += authors;
       }
-      else {
-        p += authors
-      }
-      p += "著，"
-      p += "《" + title + "》，" + "〈" + paraName + "〉頁" + page1 + "－" + page2 + "。"
+      p += "著，";
+      p += `《${title}》，〈${paraName}〉頁${page1}－${page2}。`;
     }
   }
+
   return p;
 }
 
@@ -147,93 +127,71 @@ function getPaper(values) {
   const { authors, trans, author2 } = getContributors(contributors);
   let p = "";
   if (values.isFirst) {
-    // if (!family){
-    //     editor = input("請輸入編者（編者A、編者B）\n:")
-    // }
     if (authors.includes("、")) {
-      p += authors.slice(0, authors.indexOf("、")) + "等"
+      p += `${authors.slice(0, authors.indexOf("、"))}等`;
+    } else {
+      p += authors;
     }
-    else {
-      p += authors
-    }
-    p += "，"
+    p += "，";
     if (trans !== "") {
       if (trans.includes("、")) {
-        p += trans.slice(0, trans.indexOf("、")) + "等"
+        p += `${trans.slice(0, trans.indexOf("、"))}等`;
+      } else {
+        p += trans;
       }
-      else {
-        p += trans
-      }
-      p += "譯，"
+      p += "譯，";
     }
-    p += "〈" + paraNum + " " + paraName + "〉"
+    p += `〈${paraNum} ${paraName}〉`;
     if (family) {
-      p += "收入氏著" + "，《" + title + "》（" + publisher + "：" + place + "，" + publishDate + "），頁" + page1 + "－" + page2 + "。"
+      p += `收入氏著，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
+    } else {
+      p += `編，${author2}，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
     }
-    else
-      p += "編，" + author2 + "，《" + title + "》（" + publisher + "：" + place + "，" + publishDate + "），頁" + page1 + "－" + page2 + "。"
-  }
-  else {
+  } else {
     if (authors.includes("、")) {
-      p += authors.slice(0, authors.indexOf("、")) + "等"
+      p += `${authors.slice(0, authors.indexOf("、"))}等`;
+    } else {
+      p += authors;
     }
-    else {
-      p += authors
-    }
-    p += "，"
-    p += "〈" + paraNum + " " + paraName + "〉"
+    p += "，";
+    p += `〈${paraNum} ${paraName}〉`;
     if (family) {
-      p += "收入氏著" + "，頁" + page1 + "－" + page2 + "。"
-    }
-    else {
-      p += "，頁" + page1 + "－" + page2 + "。"
+      p += `收入氏著，頁${page1}－${page2}。`;
+    } else {
+      p += `，頁${page1}－${page2}。`;
     }
   }
   return p;
 }
 
 function getJournal(values) {
-  let p = ""
   const { title, journalName, journalVolume, journalIssue, publishDate, publisher, place, contributors, page1, page2 } = values;
   const { authors, trans } = getContributors(contributors);
-  if (values.isFirst) {
-    if (authors.includes("、")) {
-      p += authors.slice(0, authors.indexOf("、")) + "等"
-    }
-    else {
-      p += authors
-    }
-    if (trans !== "") {
-      p += "著，"
-    }
-    else {
-      p += "，"
-    }
-    if (trans !== "") {
-      if (trans.includes("、")) {
-        p += trans.slice(0, trans.indexOf("、")) + "等"
-      }
-      else {
-        p += trans
-      }
-      p += "譯，"
-    }
-    if (journalVolume.includes("年")) {
-      p += "〈" + title + "〉" + "，《" + journalName + "》" + journalVolume + journalIssue + "（" + publishDate + "，" + publisher + "：" + place + "），頁" + page1 + "－" + page2 + "。"
-    }
-    else {
-      p += "〈" + title + "〉" + "，《" + journalName + "》" + journalVolume + journalIssue + "，頁" + page1 + "－" + page2 + "。"
-    }
+  let p = "";
+  if (authors.includes("、")) {
+    p += authors.slice(0, authors.indexOf("、")) + "等";
+  } else {
+    p += authors;
   }
-  else {
-    if (authors.includes("、")) {
-      p += authors.slice(0, authors.indexOf("、")) + "等"
+  if (trans !== "") {
+    p += "著，";
+    if (trans.includes("、")) {
+      p += trans.slice(0, trans.indexOf("、")) + "等";
+    } else {
+      p += trans;
     }
-    else {
-      p += authors
+    p += "譯，";
+  } else {
+    p += "，";
+  }
+  if (values.isFirst) {
+    if (journalVolume.includes("年")) {
+      p += `〈${title}〉，《${journalName}》${journalVolume}${journalIssue}（${publishDate}，${publisher}：${place}），頁${page1}－${page2}。`;
+    } else {
+      p += `〈${title}〉，《${journalName}》${journalVolume}${journalIssue}，頁${page1}－${page2}。`;
     }
-    p += "著，"
-    p += "〈" + title + "〉，頁" + page1 + "－" + page2 + "。"
+  } else {
+    p += `〈${title}〉，頁${page1}－${page2}。`;
   }
   return p;
 }
@@ -242,34 +200,27 @@ function getReview(values) {
   const { title, journalName, journalVolume, journalIssue, contributors, publisher, place, publishDate, page1, page2 } = values;
   const { authors, trans } = getContributors(contributors);
   let p = "";
-  if (values.isFirst) {
-    if (authors.includes("、")) {
-      p += authors.slice(0, authors.indexOf("、")) + "等"
-    }
-    else {
-      p += authors
-    }
-    p += "，"
-    if (trans !== "") {
-      if (trans.includes("、")) {
-        p += trans.slice(0, trans.indexOf("、")) + "等"
-      }
-      else {
-        p += trans
-      }
-      p += "譯，"
-    }
-    p += "〈" + title + "〉" + "，《" + journalName + "》" + journalVolume + journalIssue + "（" + publishDate + "，" + publisher + "：" + place + "），頁" + page1 + "－" + page2 + "。"
+  if (authors.includes("、")) {
+    p += authors.slice(0, authors.indexOf("、")) + "等";
+  } else {
+    p += authors;
   }
-  else {
-    if (authors.includes("、")) {
-      p += authors.slice(0, authors.indexOf("、")) + "等"
+  if (trans !== "") {
+    p += "著，";
+    if (trans.includes("、")) {
+      p += trans.slice(0, trans.indexOf("、")) + "等";
+    } else {
+      p += trans;
     }
-    else {
-      p += authors
-    }
-    p += "著，"
-    p += "〈" + title + "〉，頁" + page1 + "－" + page2 + "。"
+    p += "譯，";
+  } else {
+    p += "，";
+  }
+  p += `〈${title}〉，`;
+  if (values.isFirst) {
+    p += `《${journalName}》${journalVolume}${journalIssue}（${publishDate}，${publisher}：${place}），頁${page1}－${page2}。`;
+  } else {
+    p += `頁${page1}－${page2}。`;
   }
   return p;
 }
@@ -277,43 +228,44 @@ function getReview(values) {
 function getThesis(values) {
   const { title, contributors, source, publishDate, page1, page2 } = values;
   const { authors } = getContributors(contributors);
-  let p = authors + "，〈" + title + "〉（" + source + "，" + publishDate + "），頁" + page1 + "－" + page2 + "。"
+  let p = `${authors}，〈${title}〉（${source}，${publishDate}），頁${page1}－${page2}。`;
   return p;
 }
 
 function getHistory(values) {
   const { title, contributors, volumeNum, historyVersion, historyRoll, historyParaName, collection, publisher, place, publishDate, page1, page2 } = values;
   const { authors } = getContributors(contributors);
-  let p = "";
-  p += authors + "，《" + title + "》"
-  if (collection !== "")
-    p += "，收入《" + collection + "》"
-  p += volumeNum + "（" + publisher + "：" + place + "，" + publishDate + "，" + historyVersion + "）" + historyRoll + "，" + "〈" + historyParaName + "〉" + "，頁" + page1 + "－" + page2 + "。"
+  let p = `${authors}，《${title}》`;
+  if (collection !== "") {
+    p += `，收入《${collection}》`;
+  }
+  p += `${volumeNum}（${publisher}：${place}，${publishDate}，${historyVersion}）${historyRoll}，〈${historyParaName}〉，頁${page1}－${page2}。`;
   return p;
 }
 
 function getFile(values) {
   const { title, source, page1, page2 } = values;
-  let p = title + "，" + source + "，" + page1 + "－" + page2 + "。"
+  let p = `${title}，${source}，${page1}－${page2}。`;
   return p;
 }
 
-function getNewspaper(values){
+function getNewspaper(values) {
   const { name, title, contributors, place, publishDate, page } = values;
   const { authors } = getContributors(contributors);
   let p = "";
-  if (authors !== ""){
-      p += authors + "，"
+  if (authors !== "") {
+    p += `${authors}，`;
   }
-  p += "〈" + title + "〉，《" + name + "》（" + place + "）" + "，" + publishDate + "，" + page + "。"
+  p += `〈${title}〉，《${name}》（${place}），${publishDate}，${page}。`;
   return p;
 }
 
-function getWebsite(values){
+function getWebsite(values) {
   const { title, URL, year, month, day } = values;
-  let p = title + "，" + URL + "，（檢索日期：" + year + "年" + month + "月" + day + "日" + "）。"
+  let p = `${title}，${URL}，（檢索日期：${year}年${month}月${day}日）。`;
   return p;
 }
+
 
 export {
   getBook,
