@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Radio, Form } from 'antd';
 import { formItemLayout, Title, Contributors, Publisher, PublishDate, Pages, Family, Paragraph } from './formitems';
 
-function Paper() {
+function Paper({ type }) {
   const [isFirst, setIsFirst] = useState(true);
-  return <>
+  const ret_footnote = <>
     <Form.Item name="isFirst" label="引用次數" {...formItemLayout} required={true} initialValue={true}>
       <Radio.Group onChange={(e) => setIsFirst(e.target.value)} >
         <Radio.Button value={true}>首次</Radio.Button>
@@ -29,6 +29,21 @@ function Paper() {
         <Pages></Pages>
       </>}
   </>
+  const ret_reference = <>
+    <Title></Title>
+    <Contributors author translator ></Contributors>
+    <Paragraph></Paragraph>
+    <Publisher></Publisher>
+    <PublishDate></PublishDate>
+    <Pages></Pages>
+  </>;
+  return <>
+    {
+      type === "reference" ?
+        ret_reference :
+        ret_footnote
+    }
+  </>;
 
 }
 

@@ -28,35 +28,49 @@ function getContributors(contributors) {
   return { authors, trans, editors, author2 }
 }
 
-function getBook(values) {
-  const { title, contributors, publisher, place, publishDate, page1, page2 } = values;
-  const { authors, trans, editors } = getContributors(contributors);
+function getBook(values, type = "") {
   let p = "";
-  if (values.isFirst) {
-    if (trans === "" && editors === "") {
-      p += authors;
+  if (type === "reference") {
+    const { title, contributors, publisher, place, publishDate } = values;
+    const { authors } = getContributors(contributors);
+    p = `${authors}，《${title}》。${publisher}：${place}，${publishDate}。`
+  }
+  else {
+    const { title, contributors, publisher, place, publishDate, page1, page2 } = values;
+    const { authors, trans, editors } = getContributors(contributors);
+    if (values.isFirst) {
+      if (trans === "" && editors === "") {
+        p += authors;
+      } else {
+        p += `${authors}撰`;
+        if (trans !== "") p += `，${trans}譯`;
+        if (editors !== "") p += `（${editors}）`;
+      }
+      p += `，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
     } else {
-      p += `${authors}撰`;
-      if (trans !== "") p += `，${trans}譯`;
-      if (editors !== "") p += `（${editors}）`;
+      p += `${authors}，《${title}》，頁${page1}－${page2}。`;
     }
-    p += `，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
-  } else {
-    p += `${authors}，《${title}》，頁${page1}－${page2}。`;
   }
   return p;
 }
 
-function getTranslation(values) {
-  const { title, contributors, publisher, place, publishDate, page1, page2 } = values;
-  const { authors, trans } = getContributors(contributors);
+function getTranslation(values, type = "") {
   let p = "";
-  if (values.isFirst) {
-    p += `${authors.includes("、") ? authors.slice(0, authors.indexOf("、")) + "等著，" : authors + "著，"}`;
-    p += `${trans.includes("、") ? trans.slice(0, trans.indexOf("、")) + "等譯" : trans + "譯"}`;
-    p += `《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
-  } else {
-    p += `${authors}，${trans}，《${title}》，頁${page1}－${page2}。`;
+  if (type === "reference") {
+    const { title, contributors, publisher, place, publishDate } = values;
+    const { authors, trans } = getContributors(contributors);
+    p = `${authors}著，${trans}譯，《${title}》。${publisher}：${place}，${publishDate}。`
+  }
+  else {
+    const { title, contributors, publisher, place, publishDate, page1, page2 } = values;
+    const { authors, trans } = getContributors(contributors);
+    if (values.isFirst) {
+      p += `${authors.includes("、") ? authors.slice(0, authors.indexOf("、")) + "等著，" : authors + "著，"}`;
+      p += `${trans.includes("、") ? trans.slice(0, trans.indexOf("、")) + "等譯" : trans + "譯"}`;
+      p += `《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
+    } else {
+      p += `${authors}，${trans}，《${title}》，頁${page1}－${page2}。`;
+    }
   }
   return p;
 }
@@ -122,76 +136,124 @@ function getChapter(values) {
   return p;
 }
 
-function getPaper(values) {
-  const { title, family, paraNum, paraName, contributors, publisher, place, publishDate, page1, page2 } = values;
-  const { authors, trans, author2 } = getContributors(contributors);
+function getPaper(values, type = "") {
   let p = "";
-  if (values.isFirst) {
-    if (authors.includes("、")) {
+  if (type === "reference") {
+    const { title, paraNum, paraName, contributors, publisher, place, publishDate, page1, page2 } = values;
+    const { authors, trans } = getContributors(contributors);
+    if (authors.includes("、"))
       p += `${authors.slice(0, authors.indexOf("、"))}等`;
-    } else {
+    else
       p += authors;
-    }
-    p += "，";
+    if (trans !== "")
+      p += "著，"
+    else
+      p += "，"
     if (trans !== "") {
-      if (trans.includes("、")) {
-        p += `${trans.slice(0, trans.indexOf("、"))}等`;
+      if (trans.includes("、"))
+        p += `${trans.slice(0, trans.indexOf("、"))}等`
+      else
+        p += trans
+      p += "譯，"
+    }
+    p += `〈${paraNum} ${paraName}〉`
+    p += `，《${title}》，頁${page1}－${page2}。${publisher}：${place}，${publishDate}。`
+  }
+  else {
+    const { title, family, paraNum, paraName, contributors, publisher, place, publishDate, page1, page2 } = values;
+    const { authors, trans, author2 } = getContributors(contributors);
+    if (values.isFirst) {
+      if (authors.includes("、")) {
+        p += `${authors.slice(0, authors.indexOf("、"))}等`;
       } else {
-        p += trans;
+        p += authors;
       }
-      p += "譯，";
-    }
-    p += `〈${paraNum} ${paraName}〉`;
-    if (family) {
-      p += `收入氏著，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
+      p += "，";
+      if (trans !== "") {
+        if (trans.includes("、")) {
+          p += `${trans.slice(0, trans.indexOf("、"))}等`;
+        } else {
+          p += trans;
+        }
+        p += "譯，";
+      }
+      p += `〈${paraNum} ${paraName}〉`;
+      if (family) {
+        p += `收入氏著，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
+      } else {
+        p += `編，${author2}，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
+      }
     } else {
-      p += `編，${author2}，《${title}》（${publisher}：${place}，${publishDate}），頁${page1}－${page2}。`;
-    }
-  } else {
-    if (authors.includes("、")) {
-      p += `${authors.slice(0, authors.indexOf("、"))}等`;
-    } else {
-      p += authors;
-    }
-    p += "，";
-    p += `〈${paraNum} ${paraName}〉`;
-    if (family) {
-      p += `收入氏著，頁${page1}－${page2}。`;
-    } else {
-      p += `，頁${page1}－${page2}。`;
+      if (authors.includes("、")) {
+        p += `${authors.slice(0, authors.indexOf("、"))}等`;
+      } else {
+        p += authors;
+      }
+      p += "，";
+      p += `〈${paraNum} ${paraName}〉`;
+      if (family) {
+        p += `收入氏著，頁${page1}－${page2}。`;
+      } else {
+        p += `，頁${page1}－${page2}。`;
+      }
     }
   }
   return p;
 }
 
-function getJournal(values) {
-  const { title, journalName, journalVolume, journalIssue, publishDate, publisher, place, contributors, page1, page2 } = values;
-  const { authors, trans } = getContributors(contributors);
+function getJournal(values, type = "") {
   let p = "";
-  if (authors.includes("、")) {
-    p += authors.slice(0, authors.indexOf("、")) + "等";
-  } else {
-    p += authors;
-  }
-  if (trans !== "") {
-    p += "著，";
-    if (trans.includes("、")) {
-      p += trans.slice(0, trans.indexOf("、")) + "等";
-    } else {
-      p += trans;
+  if (type === "reference") {
+    const { title, journalName, journalVolume, journalIssue, publishDate, publisher, place, contributors, page1, page2 } = values;
+    const { authors, trans } = getContributors(contributors);
+    if (authors.includes("、"))
+      p += authors.slice(0, authors.indexOf("、")) + "等";
+    else
+      p += authors
+    if (trans !== "") {
+      p += "著，"
+      if (trans.includes("、")) {
+        p += trans.slice(0, trans.indexOf("、")) + "等";
+      } else {
+        p += trans;
+      }
+      p += "譯，"
     }
-    p += "譯，";
-  } else {
-    p += "，";
+    else
+      p += "，"
+    // if(jourDate.find("年") == -1 ):
+        p += `〈${title}〉，《${journalName}》${journalVolume}${journalIssue}，${publishDate}，${publisher}：${place}，頁${page1}－${page2}。`
+    // else:
+    //     p += "〈" + title + "〉" + "，《" + jour + "》" + jourDate + "，頁" + page + "。"
   }
-  if (values.isFirst) {
-    if (journalVolume.includes("年")) {
-      p += `〈${title}〉，《${journalName}》${journalVolume}${journalIssue}（${publishDate}，${publisher}：${place}），頁${page1}－${page2}。`;
+  else {
+    const { title, journalName, journalVolume, journalIssue, publishDate, publisher, place, contributors, page1, page2 } = values;
+    const { authors, trans } = getContributors(contributors);
+    if (authors.includes("、")) {
+      p += authors.slice(0, authors.indexOf("、")) + "等";
     } else {
-      p += `〈${title}〉，《${journalName}》${journalVolume}${journalIssue}，頁${page1}－${page2}。`;
+      p += authors;
     }
-  } else {
-    p += `〈${title}〉，頁${page1}－${page2}。`;
+    if (trans !== "") {
+      p += "著，";
+      if (trans.includes("、")) {
+        p += trans.slice(0, trans.indexOf("、")) + "等";
+      } else {
+        p += trans;
+      }
+      p += "譯，";
+    } else {
+      p += "，";
+    }
+    if (values.isFirst) {
+      if (journalVolume.includes("年")) {
+        p += `〈${title}〉，《${journalName}》${journalVolume}${journalIssue}（${publishDate}，${publisher}：${place}），頁${page1}－${page2}。`;
+      } else {
+        p += `〈${title}〉，《${journalName}》${journalVolume}${journalIssue}，頁${page1}－${page2}。`;
+      }
+    } else {
+      p += `〈${title}〉，頁${page1}－${page2}。`;
+    }
   }
   return p;
 }

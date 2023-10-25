@@ -82,8 +82,7 @@ function Contributors({ author, translator, editor, author2, noAuthor}) {
                 >
                   <Select style={{
                     width: 120,
-                  }}
-                    placeholder="">
+                  }}>
                     {author ? <Option value="author">作者</Option> : null}
                     {translator ? <Option value="translator">譯者</Option> : null}
                     {editor ? <Option value="editor">編輯</Option> : null}
