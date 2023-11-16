@@ -44,7 +44,7 @@ function Title() {
       {...formItemLayout}
       rules={[{ required: true, message: '請輸入標題' }]}
     >
-      <Input placeholder="標題" />
+      <Input style={{maxWidth:500}} placeholder="標題" />
     </Form.Item>
   )
 }

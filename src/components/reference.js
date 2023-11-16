@@ -6,6 +6,7 @@ import Translation from './translation';
 import Paper from './paper';
 import Journal from './journal';
 import { getBook, getJournal, getPaper, getTranslation } from '../utils';
+import Result from './result';
 
 
 function Footnote() {
@@ -69,13 +70,13 @@ function Footnote() {
           </Radio.Group>
         </Form.Item>
         {getForm(type)}
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
+        <Form.Item style={{display:"flex", justifyContent:"center"}}>
+          <Button size='large' type="primary" htmlType="submit">
+            產生
           </Button>
         </Form.Item>
+        <Result r={note}></Result>
       </Form>
-      <h1>{note}</h1>
     </div>
   );
 }

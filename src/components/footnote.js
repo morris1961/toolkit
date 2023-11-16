@@ -13,6 +13,7 @@ import File from './file';
 import Newspaper from './newspaper';
 import Website from './website';
 import { getBook, getChapter, getFile, getHistory, getJournal, getNewspaper, getPaper, getReview, getThesis, getTranslation, getWebsite } from '../utils';
+import Result from './result';
 
 
 function Footnote() {
@@ -100,10 +101,10 @@ function Footnote() {
       <Form
         name="footnote_form"
         onFinish={onFinish}
-        style={{ maxWidth: 1000 }}
+        // style={{ maxWidth: 1000 }}
         initialValues={{ contributors: [{}], }}
       >
-        <Form.Item name="type" label="書類" {...formItemLayout} required={false} initialValue={"book"}>
+        <Form.Item name="type" label="資料來源" {...formItemLayout} required={true} initialValue={"book"}>
           <Radio.Group onChange={onChange} >
             <Radio.Button value="book">專書</Radio.Button>
             <Radio.Button value="translation">譯著</Radio.Button>
@@ -119,13 +120,13 @@ function Footnote() {
           </Radio.Group>
         </Form.Item>
         {getForm(type)}
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
+        <Form.Item style={{display:"flex", justifyContent:"center", marginBottom:0}}>
+          <Button size='large' type="primary" htmlType="submit">
+            產生
           </Button>
         </Form.Item>
       </Form>
-      <h1>{note}</h1>
+      <Result r={note}></Result>
     </div>
   );
 }
