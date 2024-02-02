@@ -6,12 +6,12 @@ function Result({ r }) {
   const copy = () => {
     navigator.clipboard.writeText(r);
     messageApi.open({
-      icon: <CheckCircleFilled style={{ color: "green", fontSize: 30 }} />,
+      icon: <CheckCircleFilled style={{ color: "green", fontSize: 20 }} />,
       duration: 0.5,
       // type: 'success',
       content: '已複製！',
       style: {
-        fontSize: 30,
+        fontSize: 20,
       },
     });
   }
@@ -21,6 +21,7 @@ function Result({ r }) {
       <div style={{ display: "flex", justifyContent: "center" }} >
         <h1 onClick={copy}>{r}</h1>
       </div>
+
     </>
   );
 }

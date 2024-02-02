@@ -44,12 +44,12 @@ function Title() {
       {...formItemLayout}
       rules={[{ required: true, message: '請輸入標題' }]}
     >
-      <Input style={{maxWidth:500}} placeholder="標題" />
+      <Input style={{ maxWidth: 500 }} placeholder="標題" />
     </Form.Item>
   )
 }
 
-function Contributors({ author, translator, editor, author2, noAuthor}) {
+function Contributors({ author, translator, editor, author2, noAuthor }) {
   return (
     <Form.List name="contributors" >
       {(fields, { add, remove }) => (
@@ -108,6 +108,7 @@ function Contributors({ author, translator, editor, author2, noAuthor}) {
                     onClick={() => remove(name)}
                   />
                 ) : null}
+                {index === 0 ? <span>（包含作者、譯者、編者，順序任意）</span> : ""}
               </Space>
             </Form.Item>
           ))}
@@ -152,7 +153,7 @@ function Publisher() {
         >
           <Input placeholder="出版社" />
         </Form.Item>
-        <span>：</span>
+        <span style={{ fontSize: "16px" }} >：</span>
         <Form.Item
           name="place"
           rules={[{ required: true, message: '請輸入出版地' }]}
@@ -197,7 +198,7 @@ function Pages() {
         >
           <InputNumber min={1} />
         </Form.Item>
-        <span>-</span>
+        <span style={{ fontSize: "16px" }} >-</span>
         <Form.Item
           name="page2"
           rules={[{ required: true, message: '請輸入結束頁碼' }]}
@@ -243,7 +244,7 @@ function Paragraph() {
 function Family() {
   return (
     <Form.Item name="family" label="是否收入氏著" {...formItemLayout} required={true} initialValue={true}>
-      <Radio.Group>
+      <Radio.Group size='large'>
         <Radio.Button value={true}>是</Radio.Button>
         <Radio.Button value={false}>否</Radio.Button>
       </Radio.Group>
@@ -308,7 +309,7 @@ function Collection() {
       name="collection"
       label="叢書名"
       {...formItemLayout}
-      // rules={[{ required: true, message: '請輸入叢書名' }]}
+    // rules={[{ required: true, message: '請輸入叢書名' }]}
     >
       <Input placeholder="叢書名" />
     </Form.Item>
@@ -321,7 +322,7 @@ function VolumeNum() {
       name="volumeNum"
       label="冊數"
       {...formItemLayout}
-      // rules={[{ required: true, message: "請輸入冊數" }]}
+    // rules={[{ required: true, message: "請輸入冊數" }]}
     >
       <Input placeholder='冊數' />
     </Form.Item>

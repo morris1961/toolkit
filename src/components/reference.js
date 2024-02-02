@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Radio, Button, Form } from 'antd';
+import { message, Radio, Button, Form } from 'antd';
+import { CheckCircleFilled } from '@ant-design/icons';
 import { formItemLayout } from './formitems';
 import Book from './book';
 import Translation from './translation';
@@ -9,9 +10,10 @@ import { getBook, getJournal, getPaper, getTranslation } from '../utils';
 import Result from './result';
 
 
-function Footnote() {
+function Footnote({ histories, setHistories }) {
   const [type, setType] = useState("book");
-  const [note, setNote] = useState("")
+  const [note, setNote] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
 
   const onChange = (e) => {
     setType(e.target.value);
@@ -35,7 +37,19 @@ function Footnote() {
       default:
         break;
     }
+    messageApi.open({
+      icon: <CheckCircleFilled style={{ color: "green", fontSize: 20 }} />,
+      duration: 3,
+      content: '參考書目已產生！點擊文字即可複製！',
+      style: {
+        fontSize: 20,
+      },
+    });
     setNote(p);
+    setHistories([
+      ...histories,
+      { content: p }
+    ]);
   };
 
   const getForm = (type) => {
@@ -55,6 +69,7 @@ function Footnote() {
 
   return (
     <div >
+      {contextHolder}
       <Form
         name="reference_form"
         onFinish={onFinish}
@@ -62,7 +77,7 @@ function Footnote() {
         initialValues={{ contributors: [{}], }}
       >
         <Form.Item name="type" label="書類" {...formItemLayout} required={false} initialValue={"book"}>
-          <Radio.Group onChange={onChange} >
+          <Radio.Group size='large' onChange={onChange} >
             <Radio.Button value="book">專書</Radio.Button>
             <Radio.Button value="translation">譯著</Radio.Button>
             <Radio.Button value="paper">專書論文</Radio.Button>

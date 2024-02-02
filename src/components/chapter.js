@@ -6,7 +6,7 @@ function Chapter() {
   const [isFirst, setIsFirst] = useState(true);
   return <>
     <Form.Item name="isFirst" label="引用次數" {...formItemLayout} required={true} initialValue={true}>
-      <Radio.Group onChange={(e) => setIsFirst(e.target.value)}>
+      <Radio.Group size='large' onChange={(e) => setIsFirst(e.target.value)}>
         <Radio.Button value={true}>首次</Radio.Button>
         <Radio.Button value={false}>二次以上</Radio.Button>
       </Radio.Group>

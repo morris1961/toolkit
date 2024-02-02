@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Radio, Button, Form } from 'antd';
+import { message, Radio, Button, Form } from 'antd';
+import { CheckCircleFilled } from '@ant-design/icons';
 import { formItemLayout } from './formitems';
 import Book from './book';
 import Translation from './translation';
@@ -16,9 +17,10 @@ import { getBook, getChapter, getFile, getHistory, getJournal, getNewspaper, get
 import Result from './result';
 
 
-function Footnote() {
+function Footnote({ histories, setHistories }) {
   const [type, setType] = useState("book");
-  const [note, setNote] = useState("")
+  const [note, setNote] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
 
   const onChange = (e) => {
     setType(e.target.value);
@@ -64,7 +66,19 @@ function Footnote() {
         break;
       // return null;
     }
+    messageApi.open({
+      icon: <CheckCircleFilled style={{ color: "green", fontSize: 20 }} />,
+      duration: 3,
+      content: '註腳已產生！點擊文字即可複製！',
+      style: {
+        fontSize: 20,
+      },
+    });
     setNote(p);
+    setHistories([
+      ...histories,
+      { content: p }
+    ]);
   };
 
   const getForm = (type) => {
@@ -98,6 +112,7 @@ function Footnote() {
 
   return (
     <div >
+      {contextHolder}
       <Form
         name="footnote_form"
         onFinish={onFinish}
@@ -105,7 +120,7 @@ function Footnote() {
         initialValues={{ contributors: [{}], }}
       >
         <Form.Item name="type" label="資料來源" {...formItemLayout} required={true} initialValue={"book"}>
-          <Radio.Group onChange={onChange} >
+          <Radio.Group size='large' onChange={onChange} >
             <Radio.Button value="book">專書</Radio.Button>
             <Radio.Button value="translation">譯著</Radio.Button>
             <Radio.Button value="chapter">書中篇章</Radio.Button>
@@ -120,7 +135,7 @@ function Footnote() {
           </Radio.Group>
         </Form.Item>
         {getForm(type)}
-        <Form.Item style={{display:"flex", justifyContent:"center", marginBottom:0}}>
+        <Form.Item style={{ display: "flex", justifyContent: "center", marginBottom: 0 }}>
           <Button size='large' type="primary" htmlType="submit">
             產生
           </Button>

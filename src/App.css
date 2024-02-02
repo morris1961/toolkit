@@ -1,38 +1,31 @@
-.App {
-  text-align: center;
+.ant-form-item .ant-form-item-label>label {
+    font-size: 16px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.ant-input {
+    font-size: 16px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.ant-select-single .ant-select-selector {
+    font-size: 16px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.ant-btn {
+    font-size: 16px;
 }
 
-.App-link {
-  color: #61dafb;
+.ant-table-wrapper .ant-table {
+    font-size: 16px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.ant-table-wrapper .ant-table-thead>tr>th {
+    font-size: 20px;
+}
+
+.ant-table-tbody>tr>td {
+    padding: 4px !important;
+}
+
+tr.ant-table-measure-row {
+    visibility: collapse;
 }
