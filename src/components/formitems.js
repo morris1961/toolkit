@@ -201,7 +201,7 @@ function Pages() {
         <span style={{ fontSize: "16px" }} >-</span>
         <Form.Item
           name="page2"
-          rules={[{ required: true, message: '請輸入結束頁碼' }]}
+          // rules={[{ required: true, message: '請輸入結束頁碼' }]}
           noStyle>
           <InputNumber min={1} />
         </Form.Item>

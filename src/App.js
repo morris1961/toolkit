@@ -14,7 +14,7 @@ function App() {
   }
   return (
     <div>
-        <h1 style={{display:"flex", justifyContent:"center", marginBottom:0}}>文獻格式產生器</h1>
+        <h1 style={{display:"flex", justifyContent:"center", marginBottom:0}}>至堡（wen-burg）：註腳產生器</h1>
         <h2 style={{display:"flex", justifyContent:"center", marginTop:0}}>（新史學的格式）</h2>
         <Radio.Group size='large' style={{display:"flex", justifyContent:"center", marginBottom:24}} onChange={onChange} defaultValue="footnote">
           <Radio.Button value="footnote">註腳</Radio.Button>
